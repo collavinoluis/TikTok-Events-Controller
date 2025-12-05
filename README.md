@@ -1,3 +1,7 @@
+<img width="1899" height="977" alt="Captura de pantalla 2025-12-05 103520" src="https://github.com/user-attachments/assets/cedac86c-4945-4a7f-99bf-3445cb88fef5" />
+
+<img width="745" height="359" alt="Captura de pantalla 2025-12-05 103541" src="https://github.com/user-attachments/assets/67610d6a-e720-4b4e-85ed-44d4cc0342f3" />
+
 # 🕹️ TikTok Events Controller
 
 ## 🇪🇸 ESPAÑOL
@@ -37,11 +41,7 @@ Si encuentras útil este software y quieres ayudarme a seguir adelante, consider
 > 
 > A desktop application (Electron) that allows you to connect your TikTok LIVE chat interactions (Gifts, Comments, Likes, Follows, etc.) with direct actions in your games, such as simulating key presses or playing sounds. Turn your stream into an interactive game!
 
----<img width="1899" height="977" alt="Captura de pantalla 2025-12-05 103520" src="https://github.com/user-attachments/assets/cedac86c-4945-4a7f-99bf-3445cb88fef5" />
-
-<img width="745" height="359" alt="Captura de pantalla 2025-12-05 103541" src="https://github.com/user-attachments/assets/67610d6a-e720-4b4e-85ed-44d4cc0342f3" />
-
-
+---
 
 ### ✨ Key Features
 
