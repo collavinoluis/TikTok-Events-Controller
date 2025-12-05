@@ -19,7 +19,7 @@
 
 **Este es un proyecto de código abierto y completamente GRATUITO (Licencia ISC).**
 
-1.  **Descarga la última versión:** [Link a tu página de lanzamientos de GitHub] (Necesitarás crear un *release* con el ejecutable de la aplicación).
+1.  **Descarga la última versión:** https://github.com/collavinoluis/TikTok-Events-Controller/releases/download/v1.5.0/TikTok.Events.Controller.Setup.1.5.0.exe 
 2.  **Consulta el `main.js`** si deseas modificar el código o entender la lógica.
 
 ---
