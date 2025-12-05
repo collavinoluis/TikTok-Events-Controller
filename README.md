@@ -66,5 +66,5 @@ If you find this software useful and would like to help me continue developing i
 
 ## 🛠️ Installation and License
 
-* **Download Latest Version:** [Link to your GitHub Releases page]
+* **Download Latest Version:** https://github.com/collavinoluis/TikTok-Events-Controller/releases/tag/v1.5.0
 * **License:** This project is licensed under the **ISC License**.
