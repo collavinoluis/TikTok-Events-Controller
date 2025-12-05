@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>TikTok Live Feed</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            font-family: 'Outfit', sans-serif; 
+            background-color: transparent; 
+            margin: 0; padding: 0;
+            overflow: hidden; 
+            height: 100vh;
+            display: flex; flex-direction: column;
+        }
+        #headerBar {
+            background: rgba(9, 9, 11, 0.9);
+            border-bottom: 1px solid #27272a;
+            height: 32px;
+            display: flex; justify-content: flex-end; align-items: center;
+            padding: 0 10px;
+            -webkit-app-region: drag; 
+            z-index: 50;
+        }
+        #viewerPill {
+            background: #27272a;
+            color: #ef4444;
+            padding: 3px 10px; border-radius: 20px;
+            font-size: 11px; font-weight: 700;
+            display: flex; gap: 6px; align-items: center;
+            border: 1px solid #3f3f46;
+        }
+        .live-dot { width: 6px; height: 6px; background: #ef4444; border-radius: 50%; box-shadow: 0 0 8px #ef4444; }
+        #chatFeed { 
+            flex: 1; padding: 15px; overflow-y: auto; 
+            display: flex; flex-direction: column; 
+            scroll-behavior: smooth;
+        }
+        #chatFeed::-webkit-scrollbar { display: none; }
+        .chat-card {
+            background: rgba(24, 24, 27, 0.85); 
+            backdrop-filter: blur(4px);
+            margin-bottom: 8px;
+            padding: 10px 12px;
+            border-radius: 12px;
+            color: white;
+            font-size: 13px; line-height: 1.4;
+            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-origin: left center;
+            display: flex; gap: 10px;
+        }
+        /* FOTO DE PERFIL */
+        .avatar {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: #333; color: #fff;
+            display: block; object-fit: cover;
+            flex-shrink: 0;
+            border: 1px solid #444;
+        }
+        .avatar-placeholder {
+            display: flex; justify-content: center; align-items: center; font-weight: 800; font-size: 12px;
+        }
+        
+        .content-col { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+        .card-header { display: flex; align-items: center; gap: 6px; margin-bottom: 2px; }
+        .username { font-weight: 700; font-size: 12px; color: #d4d4d8; }
+        .badge { font-size: 9px; font-weight: 800; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .message-text { color: #f4f4f5; font-weight: 400; }
+        
+        .type-gift { border-left: 3px solid #fbbf24; background: linear-gradient(90deg, rgba(251, 191, 36, 0.1), rgba(24, 24, 27, 0.9)); }
+        .type-gift .badge { background: #fbbf24; color: black; }
+        .type-like { border-left: 3px solid #ef4444; }
+        .type-like .badge { background: #ef4444; color: white; }
+        .type-rule { border-left: 3px solid #06b6d4; background: rgba(6, 182, 212, 0.1); }
+        .type-rule .badge { background: #06b6d4; color: black; }
+        .type-rule .message-text { font-weight: 700; color: #22d3ee; }
+        .type-social { border-left: 3px solid #3b82f6; }
+        .type-social .badge { background: #3b82f6; color: white; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-20px) scale(0.95); } to { opacity: 1; transform: translateX(0) scale(1); } }
+    </style>
+</head>
+<body>
+    <div id="headerBar">
+        <div id="viewerPill">
+            <div class="live-dot"></div>
+            <span id="viewerCountDisplay">OFFLINE</span>
+        </div>
+    </div>
+    <div id="chatFeed"></div>
+    <script>
+        const chatFeed = document.getElementById('chatFeed');
+        const viewerCountDisplay = document.getElementById('viewerCountDisplay');
+        function applyCustomStyles(settings) {
+            document.body.style.fontSize = `${settings.fontSize}px`;
+            if (settings.backgroundColor && settings.backgroundColor !== '#000000') {
+                document.body.style.backgroundColor = settings.backgroundColor;
+            } else { document.body.style.backgroundColor = 'transparent'; }
+            if (settings.textColor) document.body.style.color = settings.textColor;
+        }
+        window.api.onActiveProfileChange(applyCustomStyles);
+        window.api.onViewerCountUpdate((c) => {
+            viewerCountDisplay.textContent = c.toLocaleString('es-ES');
+            viewerCountDisplay.style.color = c > 0 ? '#ef4444' : '#71717a';
+        });
+        window.api.onChatMessage((data) => {
+            const card = document.createElement('div');
+            card.classList.add('chat-card');
+            let badgeHTML = ''; let typeClass = '';
+            
+            // Imagen o Placeholder
+            let avatarHTML = '';
+            if(data.profileUrl) {
+                avatarHTML = `<img src="${data.profileUrl}" class="avatar" onerror="this.style.display='none'">`;
+            } else {
+                const initial = data.username.charAt(0);
+                avatarHTML = `<div class="avatar avatar-placeholder">${initial}</div>`;
+            }
+
+            if (data.type === 'gift' || data.type === 'chest') {
+                typeClass = 'type-gift'; badgeHTML = '<span class="badge">GIFT</span>'; 
+            } else if (data.type === 'like') {
+                typeClass = 'type-like'; badgeHTML = '<span class="badge">LIKE</span>'; 
+            } else if (data.type === 'rule' || data.isRuleMatch) {
+                typeClass = 'type-rule'; badgeHTML = '<span class="badge">CMD</span>'; 
+            } else if (['follow', 'share', 'join', 'subscribe'].includes(data.type)) {
+                typeClass = 'type-social'; badgeHTML = `<span class="badge">${data.type.toUpperCase()}</span>`; 
+            }
+            if(typeClass) card.classList.add(typeClass);
+            
+            card.innerHTML = `${avatarHTML}<div class="content-col"><div class="card-header">${badgeHTML}<span class="username">${data.username}</span></div><div class="message-text">${data.message}</div></div>`;
+            chatFeed.prepend(card); 
+            if(chatFeed.children.length > 50) chatFeed.removeChild(chatFeed.lastChild);
+        });
+    </script>
+</body>
+</html>

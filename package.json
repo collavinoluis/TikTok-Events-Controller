@@ -1,0 +1,41 @@
+{
+  "name": "tiktok-events-controller",
+  "version": "1.5.0",
+  "productName": "TikTok Events Controller",
+  "description": "Controlador de juegos mediante TikTok LIVE Events",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win"
+  },
+  "author": {
+    "name": "Luis Collavino (YoSoyNoSoy)",
+    "url": "https://www.tiktok.com/@YoSoyNoSoy_AR"
+  },
+  "homepage": "https://www.tiktok.com/@YoSoyNoSoy_AR", 
+  "license": "ISC",
+  "dependencies": {
+    "tiktok-live-connector": "^1.1.0"
+  },
+  "devDependencies": {
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1"
+  },
+  "build": {
+    "appId": "com.luiscollavino.tiktokcontroller",
+    "productName": "TikTok Events Controller",
+    "copyright": "Copyright © 2025 Luis Collavino",
+    "files": [
+      "**/*",
+      "!node_modules/*",
+      "node_modules/tiktok-live-connector/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+    "directories": {
+      "output": "dist"
+    }
+  }
+}
